@@ -34,13 +34,11 @@
 
     .wrapper { width: 100%; max-width: 420px; }
 
-    /* ── Header ── */
     header { text-align: center; margin-bottom: 1.75rem; }
     .icon  { font-size: 2.75rem; display: block; margin-bottom: 0.2rem; }
     h1     { font-size: 1.8rem; font-weight: 900; color: var(--ink); }
     .sub   { color: var(--muted); font-size: 0.88rem; font-weight: 600; margin-top: 0.2rem; }
 
-    /* ── Card ── */
     .card {
       background: var(--card);
       border-radius: 1.25rem;
@@ -49,7 +47,6 @@
       margin-bottom: 1rem;
     }
 
-    /* ── Section label ── */
     .label {
       font-size: 0.7rem;
       font-weight: 800;
@@ -59,12 +56,11 @@
       margin-bottom: 0.7rem;
     }
 
-    /* ── Theme grid ── */
     .themes {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 0.5rem;
-      margin-bottom: 0;
+      margin-bottom: 1.25rem;
     }
 
     .theme-btn {
@@ -85,32 +81,6 @@
     .theme-em  { font-size: 1.5rem; display: block; line-height: 1; }
     .theme-lbl { font-size: 0.72rem; font-weight: 800; margin-top: 0.3rem; display: block; color: var(--ink); }
 
-    /* ── Difficulty ── */
-    .tabs {
-      display: flex;
-      background: #fef3c7;
-      border-radius: 2rem;
-      padding: 0.2rem;
-      gap: 0.2rem;
-    }
-
-    .tab {
-      flex: 1;
-      padding: 0.5rem;
-      border-radius: 2rem;
-      border: none;
-      background: transparent;
-      font-family: 'Nunito', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 800;
-      color: var(--muted);
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .tab.active { background: var(--amber); color: #fff; }
-
-    /* ── Generate button ── */
     .btn-gerar {
       width: 100%;
       padding: 0.9rem;
@@ -123,13 +93,11 @@
       font-weight: 900;
       cursor: pointer;
       transition: background 0.15s, transform 0.1s, opacity 0.2s;
-      letter-spacing: 0.01em;
     }
     .btn-gerar:hover:not(:disabled) { background: var(--amber2); }
     .btn-gerar:active:not(:disabled) { transform: scale(0.98); }
     .btn-gerar:disabled { opacity: 0.35; cursor: not-allowed; }
 
-    /* ── Loading ── */
     .loading {
       display: none;
       text-align: center;
@@ -146,7 +114,6 @@
     }
     .loading p { color: var(--muted); font-weight: 700; margin-top: 0.75rem; font-size: 0.9rem; }
 
-    /* ── Error ── */
     .error-msg {
       display: none;
       background: rgba(220,38,38,0.08);
@@ -159,7 +126,6 @@
       margin-bottom: 1rem;
     }
 
-    /* ── Riddle cards ── */
     .riddles { display: none; }
 
     .riddle-card {
@@ -169,10 +135,11 @@
       padding: 1.35rem 1.35rem 1.1rem;
       margin-bottom: 0.85rem;
       animation: fadeUp 0.4s ease forwards;
+      opacity: 0;
     }
-
-    .riddle-card:nth-child(2) { animation-delay: 0.1s; opacity: 0; }
-    .riddle-card:nth-child(3) { animation-delay: 0.2s; opacity: 0; }
+    .riddle-card:nth-child(1) { animation-delay: 0s; }
+    .riddle-card:nth-child(2) { animation-delay: 0.1s; }
+    .riddle-card:nth-child(3) { animation-delay: 0.2s; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(10px); }
@@ -226,17 +193,15 @@
       text-align: center;
       animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1) forwards;
     }
-
     @keyframes popIn {
       from { opacity: 0; transform: scale(0.85); }
       to   { opacity: 1; transform: scale(1); }
     }
 
-    /* ── Bottom actions ── */
     .actions {
       display: none;
-      gap: 0.6rem;
       flex-direction: column;
+      gap: 0.6rem;
       margin-top: 0.25rem;
     }
     .actions.show { display: flex; }
@@ -273,7 +238,7 @@
     .btn-nova:hover { background: rgba(0,0,0,0.1); }
 
     @media (prefers-reduced-motion: reduce) {
-      .loading-icon, .riddle-card, .riddle-a { animation: none; }
+      .loading-icon, .riddle-card, .riddle-a { animation: none; opacity: 1; }
     }
   </style>
 </head>
@@ -289,7 +254,7 @@
   <div id="errorMsg" class="error-msg"></div>
 
   <div class="card" id="formCard">
-    <div class="label" style="margin-bottom:0.7rem">Tema</div>
+    <div class="label">Tema</div>
     <div class="themes" id="themes">
       <button class="theme-btn" data-value="animais">
         <span class="theme-em">🐾</span><span class="theme-lbl">Animais</span>
@@ -310,13 +275,6 @@
         <span class="theme-em">🍕</span><span class="theme-lbl">Comida</span>
       </button>
     </div>
-
-    <div class="label" style="margin-top:1.25rem;margin-bottom:0.7rem">Dificuldade</div>
-    <div class="tabs" style="margin-bottom:1.25rem">
-      <button class="tab active" id="tabFacil" onclick="setDiff('facil')">🌟 Fácil — Alice</button>
-      <button class="tab" id="tabDificil" onclick="setDiff('dificil')">🔥 Difícil — Francisco</button>
-    </div>
-
     <button class="btn-gerar" id="btnGerar" disabled>🤔 Gerar Adivinhas</button>
   </div>
 
@@ -335,7 +293,6 @@
 </div>
 <script>
   let tema = null;
-  let diff = 'facil';
 
   const btnGerar = document.getElementById('btnGerar');
   const formCard = document.getElementById('formCard');
@@ -344,7 +301,6 @@
   const actions  = document.getElementById('actions');
   const errorMsg = document.getElementById('errorMsg');
 
-  /* ── Theme selection ── */
   document.getElementById('themes').querySelectorAll('.theme-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('selected'));
@@ -354,13 +310,6 @@
     });
   });
 
-  function setDiff(d) {
-    diff = d;
-    document.getElementById('tabFacil').classList.toggle('active', d === 'facil');
-    document.getElementById('tabDificil').classList.toggle('active', d === 'dificil');
-  }
-
-  /* ── Generate ── */
   btnGerar.addEventListener('click', () => generate());
   document.getElementById('btnMais').addEventListener('click', () => generate());
 
@@ -375,7 +324,7 @@
       const res  = await fetch('/api/adivinha', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ tema, dificuldade: diff })
+        body:    JSON.stringify({ tema })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erro desconhecido');
@@ -399,13 +348,10 @@
       card.innerHTML = `
         <div class="riddle-num">Adivinha ${i + 1}</div>
         <div class="riddle-q">${a.pergunta}</div>
-        <button class="btn-reveal" onclick="reveal(this, '${escHtml(a.resposta)}')">
-          👀 Ver resposta
-        </button>
+        <button class="btn-reveal" onclick="reveal(this, '${esc(a.resposta)}')">👀 Ver resposta</button>
         <div class="riddle-a"></div>`;
       riddlesEl.appendChild(card);
     });
-
     riddlesEl.style.display = 'block';
     actions.classList.add('show');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -420,9 +366,7 @@
     ansEl.style.display = 'block';
   }
 
-  function escHtml(s) {
-    return s.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-  }
+  function esc(s) { return s.replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
 
   function resetForm() {
     riddlesEl.style.display = 'none';
