@@ -1,10 +1,8 @@
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Método não permitido' });
 
-  const { tema, dificuldade } = req.body || {};
+  const { tema } = req.body || {};
   if (!tema) return res.status(400).json({ error: 'Tema em falta' });
-
-  const idade = dificuldade === 'dificil' ? '6' : '4';
 
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
@@ -20,16 +18,17 @@ module.exports = async function handler(req, res) {
         system: 'És um especialista em adivinhas portuguesas para crianças. Respondes SEMPRE e APENAS com JSON válido — sem texto adicional, sem markdown, sem backticks, sem comentários.',
         messages: [{
           role: 'user',
-          content: `Cria exatamente 3 adivinhas em português europeu sobre o tema "${tema}" para uma criança de ${idade} anos.
+          content: `Cria exatamente 3 adivinhas em português europeu sobre o tema "${tema}" para crianças de 4 a 6 anos.
 
 Responde APENAS com este JSON (sem mais nada):
 [{"pergunta":"...","resposta":"..."},{"pergunta":"...","resposta":"..."},{"pergunta":"...","resposta":"..."}]
 
 Regras:
 - Português europeu (nunca brasileiro)
-- ${dificuldade === 'dificil' ? 'Um pouco desafiantes mas divertidas, com rima se possível' : 'Muito simples e diretas, com dicas óbvias, ideais para 4 anos'}
+- Divertidas e com rima sempre que possível
+- Nem demasiado fáceis nem demasiado difíceis — boas para 4 a 6 anos
 - Resposta: uma palavra ou frase muito curta
-- Sem violência, sem temas assustadores`
+- Sem violência ou temas assustadores`
         }]
       })
     });
